@@ -21,6 +21,8 @@ namespace RockPaperScissors
             Win,
             Lose,
             Draw,
+            Other,
+            Foo
         }
 
         internal Game()
@@ -38,6 +40,7 @@ namespace RockPaperScissors
 
         }
 
+        private string _playerName;
         private int _playerScore;
         private int _computerScore;
         private GameChoice _currentPlayerChoice;
@@ -74,7 +77,7 @@ namespace RockPaperScissors
             {
                 return @$"
 -------------------------------
-|  Player: {_playerScore}  |  Computer: {_computerScore}  |
+|  {_playerName}: {_playerScore}  |  Computer: {_computerScore}  |
 -------------------------------
 
 What would you like to throw?
@@ -89,18 +92,30 @@ What would you like to throw?
 
         public void StartRound()
         {
+            CheckForName();
             ShowMenu();
             GetPlayerInput();
         }
 
+        private void CheckForName()
+        {
+            if (_playerName == "")
+            {
+                
+                
+                //AskForName();
+            }
+        }
+
         private void GetPlayerInput()
         {
-            var input = Console.ReadKey().KeyChar.ToString();
-
+            string input = Console.ReadKey().KeyChar.ToString();
+            int parseResult = int.Parse(input);
+            //bool tryParseResult = int.TryParse(input, out int inputAsInt);
             if (!String.IsNullOrWhiteSpace(input) && int.TryParse(input, out int inputAsInt))
             {
                 _currentPlayerChoice = (GameChoice)inputAsInt; //cast from int to GameChoice
-                _currentComputerChoice = (GameChoice)(new Random().Next(1, 3)); //cast from int to GameChoice
+                _currentComputerChoice = (GameChoice)(new Random().Next(1, 4)); //cast from int to GameChoice
                 ShowGraphicsForChoices();
                 DetermineOutcomeOfRound();
             }
@@ -126,6 +141,8 @@ VS
 
         private void DetermineOutcomeOfRound()
         {
+
+            
 
             switch (_currentPlayerChoice)
             {
@@ -204,7 +221,7 @@ VS
             {
                 Console.WriteLine($"You {result}!");
                 Console.Write("Press any key to play next round...");
-                Console.Read();
+                Console.ReadLine();
                 StartRound();
             }
         }
